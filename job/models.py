@@ -1,6 +1,7 @@
 from pydoc import describe
 from pyexpat import model
 from turtle import title
+from unicodedata import category
 from django.db import models
 
 # Create your models here.
@@ -42,6 +43,18 @@ class Job(models.Model):  # Table
     salary = models.IntegerField(default=0)
 
     experience = models.IntegerField(default=1)
+    
+    category = models.ForeignKey('Category',on_delete=models.CASCADE)
 
     def __str__(self):
+        '''
+        This method returns the string representation of the object. This method is called when print() or str() function is invoked on an object. This method must return the String object.
+        '''
         return self.title
+
+class Category(models.Model):
+    
+    name = models.CharField(max_length=15)
+    
+    def __str__(self) :
+        return self.name
