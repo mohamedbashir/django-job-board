@@ -1,5 +1,7 @@
+from distutils.command.upload import upload
 from pydoc import describe
 from pyexpat import model
+from tkinter import image_names
 from turtle import title
 from unicodedata import category
 from django.db import models
@@ -29,23 +31,22 @@ JOB_TYPE = (
 )
 
 
+def image_upload(instance, filename):
+    image_name, extension = filename.split(".")
+    return "job/%s/%s.%s" % (instance.id, instance.id, extension)
+
+
 class Job(models.Model):  # Table
     title = models.CharField(max_length=100)  # Column
     # Location
-
     job_type = models.CharField(max_length=15, choices=JOB_TYPE)
-
     description = models.TextField(max_length=1000)
-
     published_at = models.DateTimeField(auto_now=True)
-
     vacancy = models.IntegerField(default=1)
-
     salary = models.IntegerField(default=0)
-
     experience = models.IntegerField(default=1)
-    
-    category = models.ForeignKey('Category',on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=image_upload)
 
     def __str__(self):
         '''
@@ -53,9 +54,10 @@ class Job(models.Model):  # Table
         '''
         return self.title
 
+
 class Category(models.Model):
-    
+
     name = models.CharField(max_length=15)
-    
-    def __str__(self) :
+
+    def __str__(self):
         return self.name
