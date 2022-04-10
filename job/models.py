@@ -18,7 +18,7 @@ Django model field :
 كل مره بتعدل علي ملف الموديل لازم 
 تكتب امرين :
 
-python manag.py makemigrations
+python manage.py makemigrations
 ودي الديجانو بتشوف اذا ينفع الفيلد يتحول لكويري في الداتا بيز فبيتاكد اذا ينفع ولا لا يتعمل في الداتا بيز , لو مطلعش ايرور ده معناه انه ينفع يتنفذ علي الداتا بيز , علشان انفذه اكتب 
 
 python manage.py migrate 
