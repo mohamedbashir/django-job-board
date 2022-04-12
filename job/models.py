@@ -5,7 +5,7 @@ from tkinter import image_names
 from turtle import title
 from unicodedata import category
 from django.db import models
-
+from django.template.defaultfilters import slugify
 # Create your models here.
 
 '''
@@ -48,6 +48,13 @@ class Job(models.Model):  # Table
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     image = models.ImageField(upload_to=image_upload)
 
+    slug = models.SlugField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+
+        self.slug = slugify(self.title)
+        super(Job, self).save(*args, **kwargs)
+
     def __str__(self):
         '''
         This method returns the string representation of the object. This method is called when print() or str() function is invoked on an object. This method must return the String object.
@@ -58,6 +65,19 @@ class Job(models.Model):  # Table
 class Category(models.Model):
 
     name = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.name
+
+
+class Apply(models.Model):
+    job = models.ForeignKey(
+        Job, on_delete=models.CASCADE, related_name='job_apply')
+    name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=100)
+    website = models.URLField()
+    cd = models.FileField(upload_to='apply/')
+    cover_letter = models.TextField(max_length=500)
 
     def __str__(self):
         return self.name
